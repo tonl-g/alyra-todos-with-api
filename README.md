@@ -43,7 +43,7 @@ C'est dans le fichier `public/index.html` où nous devons modifier l'attribut la
 
 ## Step 3 - App.js et App.css
 
-Nous n'avons pas besoin d'un fichier .css global. Nous allons supprimer le contenu du fichier `App.css` et nous ne l'importons pas.
+Nous n'avons pas besoin d'un fichier .css global. Nous allons supprimer le fichier `App.css` et nous ne l'importons pas.
 À la fin de cette étape notre app devrait afficher le titre ToDosApp
 
 ```javascript
@@ -63,13 +63,18 @@ export default App
 
 ## Step 4 components folder
 
-Nous avons besoin des components à inclure dans `App`: `<Todos />`, `<Todo />` et `<AddToDoForm />`
+Nous avons besoin des components à inclure : `<Todos />`, `<Todo />` et `<AddToDoForm />`
 
-Nous allons placer tous les components dans un nouveau dossier `components`. Voici la structure que nous allons créer :
+Nous allons placer tous les components dans un nouveau dossier `components`.
+
+```bash
+mkdir src/components
+```
+
+Voici la structure que nous allons créer :
 
 ```bash
 src
-├── App.css
 ├── App.js
 ├── App.test.js
 ├── components
@@ -94,7 +99,7 @@ yarn add uuidv4
 ```
 
 ```javascript
-// Todos.js
+// src/components/Todos.js
 import React, { useState } from "react"
 import Todo from "./Todo"
 import AddTodoForm from "./AddTodoForm"
@@ -108,7 +113,7 @@ export default Todos
 ```
 
 ```javascript
-// Todo.js
+// src/components/Todo.js
 import React from "react"
 
 const Todo = () => {
@@ -119,7 +124,7 @@ export default Todo
 ```
 
 ```javascript
-// AddTodoForm.js
+// src/components/AddTodoForm.js
 import React from "react"
 
 const AddTodoForm = () => {
@@ -129,105 +134,18 @@ const AddTodoForm = () => {
 export default AddTodoForm
 ```
 
-## Step 6 Décomposer Weather en plus de composants
-
-Voici la structure des fichiers (c'est juste une possibilité)
-
-```bash
-src
-├── App.css
-├── App.js
-├── components
-│   ├── CityForm
-│   │   └── index.js
-│   └── Weather
-│       ├── Description.js
-│       ├── Humidity.js
-│       ├── Icon.js
-│       ├── Temperature.js
-│       ├── humidity.css
-│       └── index.js
-├── index.css
-├── index.js
-├── logo.svg
-├── serviceWorker.js
-└── setupTests.js
-```
-
-Notre compenent `Weather` devient
+et notre `App.js`
 
 ```javascript
-// src/components/Weather/index.js
-
-import React, { useState, useEffect } from "react"
-import Icon from "./Icon"
-import Description from "./Description"
-import Temperature from "./Temperature"
-import Humidity from "./Humidity"
-
-const Weather = ({ city }) => {
-  // comme avant
-  return (
-    <>
-      {!!location && (
-        <section className="text-center">
-          <Icon iconID={iconID} />
-          <h2 className="mb-4">Conditions météo à {location}</h2>
-          <Description description={description} />
-          <Temperature mainTemp={mainTemp} feelsLike={feelsLike} />
-          <Humidity humidity={humidity} />
-        </section>
-      )}
-    </>
-  )
-}
-
-export default Weather
-```
-
-Dans nos directives d'import, mous n'avons pas besoin de spécifier l'extenstion `.js`, par exemple `./Descrition.js` peut être remplacer par `./Descrition`
-
-Regardons par exemple `Humidity`
-
-```javascript
-// src/components/Weather/Humidity.js
+// src/App.js
 import React from "react"
-import "./humidity.css"
-
-const Humidity = ({ humidity }) => {
-  return (
-    <>
-      <p>
-        <b>humidité</b> {humidity}%
-      </p>
-      <div
-        className="humidity"
-        style={{ backgroundSize: `${humidity}% auto` }}
-      />
-    </>
-  )
-}
-
-export default Humidity
-```
-
-Le fichier `src/components/Weather/humidity.css` contient les style pour le selecteur `.humidity`.
-
-Il reste alors à ajouter `Temperature`, `Icon` et `Description` 🙂
-
-## Step 7 Importer Weather dans App
-
-```javascript
-/* src/App.js */
-import React, { useState } from "react"
-import Weather from "./components/Weather"
+import Todos from "./components/Todos"
 
 function App() {
-  const [city, setCity] = useState("Paris")
   return (
     <div className="container my-4">
-      <h1 className="display-3 text-center mb-4">Météo Actuelle</h1>
-      <Weather city={city} />
+      <h1 className="text-center">ToDos App</h1>
+      <Todos />
     </div>
   )
 }
@@ -235,58 +153,66 @@ function App() {
 export default App
 ```
 
-**Attention** Ici, nous mettons `import Weather from "./components/Weather"`. Si `./components/Weather.js` n'est pas trouvé, `./components/Weather/index.js` va être cherché.
+## Todos.js
 
-## Step 8 CityForm Component
+- Avec `import React, { useState } from "react"` nous importons `useState` directement donc nous n'avons plus besoin d'utiliser `React.useState`.
+- `uuid` est un _named import_, et nous allons utiliser `uuid` au lieu de `uuidv4`
 
 ```javascript
-// src/components/CityForm/index.js
-import React from "react"
+// src/components/Todos.js
+import React, { useState } from "react"
+import Todo from "./Todo"
+import AddTodoForm from "./AddTodoForm"
+import { uuid } from "uuidv4"
 
-const CityForm = ({ handler }) => {
-  const submitHandler = (e) => {
-    e.preventDefault()
-    handler(e.target.elements.city.value)
-    e.target.reset()
+const Todos = () => {
+  const [todos, setTodos] = useState([])
+
+  const addTodo = (todo) => {
+    setTodos([...todos, { text: todo, isCompleted: false, id: uuid() }])
   }
+  const toggleCompleteTodo = (todo) => {
+    setTodos(
+      todos.map((item) => {
+        if (item.id === todo.id) {
+          item.isCompleted = !item.isCompleted
+        }
+        return item
+      })
+    )
+  }
+  const deleteTodo = (todo) => {
+    setTodos(
+      todos.filter((item) => {
+        return item.id !== todo.id
+      })
+    )
+  }
+  const completedCount = todos.filter((el) => el.isCompleted).length
   return (
-    <form onSubmit={submitHandler}>
-      <div className="input-group mb-2">
-        <label className="input-group-text" htmlFor="city">
-          Choisissez une ville
-        </label>
-        <input className="form-control" id="city" required />
-      </div>
-    </form>
+    <>
+      <h2 className="text-center">
+        Ma liste de tâches ({completedCount} / {todos.length})
+      </h2>
+      {todos.map((todo) => {
+        return (
+          <Todo
+            key={todo.id}
+            todo={todo}
+            handleCompleteClick={toggleCompleteTodo}
+            handleDeleteClick={deleteTodo}
+          />
+        )
+      })}
+      <AddTodoForm handler={addTodo} />
+    </>
   )
 }
 
-export default CityForm
+export default Todos
 ```
 
-et nous allons l'importer dans `App.js` comme ceci :
-
-```javascript
-/* src/App.js */
-import React, { useState } from "react"
-import CityForm from "./components/CityForm"
-import Weather from "./components/Weather"
-
-function App() {
-  const [city, setCity] = useState("Paris")
-  return (
-    <div className="container my-4">
-      <h1 className="display-3 text-center mb-4">Météo Actuelle</h1>
-      <CityForm handler={setCity} />
-      <Weather city={city} />
-    </div>
-  )
-}
-
-export default App
-```
-
-## Step 9 useWeather hook
+## Todo
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
