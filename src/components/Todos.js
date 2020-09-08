@@ -27,7 +27,7 @@ const Todos = () => {
   const addTodo = (todo) => {
     setTodos([...todos, { text: todo, isCompleted: false, id: uuid() }])
   }
-
+  const toggleCompleteTodo = (todo) => {
     setTodos(
       todos.map((item) => {
         if (item.id === todo.id) {
