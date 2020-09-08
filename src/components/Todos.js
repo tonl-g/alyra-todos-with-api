@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Todo from "./Todo"
 import AddTodoForm from "./AddTodoForm"
 import { uuid } from "uuidv4"
@@ -27,13 +27,15 @@ const Todos = () => {
   const addTodo = (todo) => {
     setTodos([...todos, { text: todo, isCompleted: false, id: uuid() }])
   }
-  const toggleCompleteTodo = (todo) => {
+
     setTodos(
       todos.map((item) => {
         if (item.id === todo.id) {
-          item.isCompleted = !item.isCompleted
+          console.log("here")
+          //item.isCompleted = !item.isCompleted
+          item = { ...item, isCompleted: !item.isCompleted }
         }
-        return item
+        return { ...item }
       })
     )
   }

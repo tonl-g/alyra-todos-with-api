@@ -2,6 +2,7 @@ import React from "react"
 
 const Todo = (props) => {
   const { todo, handleCompleteClick, handleDeleteClick } = props
+  const handler = () => handleCompleteClick(todo)
   return (
     <div className="shadow-sm border p-2 d-flex align-items-center justify-content-between mb-2">
       <span
@@ -13,7 +14,7 @@ const Todo = (props) => {
         <button
           className="btn btn-light btn-sm"
           type="button"
-          onClick={() => handleCompleteClick(todo)}
+          onClick={handler}
         >
           {todo.isCompleted ? "Rétablir" : "Terminer"}
         </button>
