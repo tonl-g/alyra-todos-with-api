@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import Todo from "./Todo"
 import AddTodoForm from "./AddTodoForm"
-import { uuid } from "uuidv4"
+import { v4 as uuidv4 } from "uuid"
 
 const initialTodos = [
   {
     text: "Faires des courses",
-    isCompleted: false,
+    isCompleted: true,
     id: "1b688c51-e990-4ce3-95a5-9018cf81d23d",
   },
   {
@@ -24,45 +24,47 @@ const initialTodos = [
 const Todos = () => {
   const [todos, setTodos] = useState(initialTodos)
 
-  const addTodo = (todo) => {
-    setTodos([...todos, { text: todo, isCompleted: false, id: uuid() }])
+  const addTodo = (text) => {
+    const newTodo = {
+      text,
+      isCompleted: false,
+      id: uuidv4(),
+    }
+    setTodos([...todos, newTodo])
   }
-  const toggleCompleteTodo = (todo) => {
+
+  const deleteTodo = (task) => {
+    setTodos(todos.filter((el) => el.id !== task.id))
+  }
+
+  const toggleCompleteTodo = (task) => {
     setTodos(
-      todos.map((item) => {
-        if (item.id === todo.id) {
-          console.log("here")
-          //item.isCompleted = !item.isCompleted
-          item = { ...item, isCompleted: !item.isCompleted }
+      todos.map((el) => {
+        if (el.id === task.id) {
+          el.isCompleted = !el.isCompleted
         }
-        return { ...item }
+        return el
       })
     )
   }
-  const deleteTodo = (todo) => {
-    setTodos(
-      todos.filter((item) => {
-        return item.id !== todo.id
-      })
-    )
-  }
+
   const completedCount = todos.filter((el) => el.isCompleted).length
   return (
     <>
       <h2 className="text-center">
         Ma liste de tâches ({completedCount} / {todos.length})
       </h2>
-      {todos.map((todo) => {
+      {todos.map((el) => {
         return (
           <Todo
-            key={todo.id}
-            todo={todo}
-            handleCompleteClick={toggleCompleteTodo}
-            handleDeleteClick={deleteTodo}
+            key={el.id}
+            todo={el}
+            deleteTodo={deleteTodo}
+            toggleCompleteTodo={toggleCompleteTodo}
           />
         )
       })}
-      <AddTodoForm handler={addTodo} />
+      <AddTodoForm addTodo={addTodo} />
     </>
   )
 }

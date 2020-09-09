@@ -1,27 +1,35 @@
 import React from "react"
 
 const Todo = (props) => {
-  const { todo, handleCompleteClick, handleDeleteClick } = props
-  const handler = () => handleCompleteClick(todo)
+  const { todo, deleteTodo, toggleCompleteTodo } = props
+  const style = {
+    textDecoration: todo.isCompleted ? "line-through" : "none",
+  }
   return (
     <div className="shadow-sm border p-2 d-flex align-items-center justify-content-between mb-2">
-      <span
-        style={{ textDecoration: todo.isCompleted ? "line-through" : "none" }}
-      >
-        {todo.text}
-      </span>
+      <span style={style}>{todo.text}</span>
       <div className="btn-group">
-        <button
-          className="btn btn-light btn-sm"
-          type="button"
-          onClick={handler}
-        >
-          {todo.isCompleted ? "Rétablir" : "Terminer"}
-        </button>
+        {todo.isCompleted ? (
+          <button
+            className="btn btn-light btn-sm btn-dark"
+            type="button"
+            onClick={() => toggleCompleteTodo(todo)}
+          >
+            Rétablir
+          </button>
+        ) : (
+          <button
+            className="btn btn-light btn-sm"
+            type="button"
+            onClick={() => toggleCompleteTodo(todo)}
+          >
+            Terminer
+          </button>
+        )}
         <button
           className="btn btn-danger btn-sm"
           type="button"
-          onClick={() => handleDeleteClick(todo)}
+          onClick={() => deleteTodo(todo)}
         >
           Supprimer
         </button>
