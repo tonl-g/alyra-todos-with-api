@@ -25,6 +25,6 @@ Mettez en place _mode dark_ en option, inspirez vous du projet shopping liste
 </div>
 ```
 
-## Mode dark - localStorage
+## Mode - localStorage
 
 Enregistrer la dernière préférence de l'utilisateur dans `localStorage`
