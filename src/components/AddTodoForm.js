@@ -1,5 +1,3 @@
-import React from "react"
-
 const AddTodoForm = (props) => {
   const { addTodo, setFilter } = props
   const handleFormSubmit = (event) => {

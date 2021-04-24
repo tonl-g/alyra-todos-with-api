@@ -1,5 +1,3 @@
-import React from "react"
-
 const SelectTodos = (props) => {
   const { filter, setFilter } = props
   const handleSelectChange = (event) => {
