@@ -15,7 +15,7 @@ Assurez vous que vos tâches soient enregistrées dans `localStorage` 💪
 
 ## Mode dark
 
-Mettez en place _mode dark_ en option, inspirez vous du projet shopping liste
+Mettez en place _mode dark_ en option.
 
 ```html
 <!-- bootstrap5 markup pour un switch -->
