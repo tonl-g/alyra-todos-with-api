@@ -26,7 +26,7 @@ const initialTodos = [
     id: "df0ce18c-b4fa-4651-82c0-72fad6b486e4"
   },
   {
-    text: "Enregistret dark mode dans localStorage 🥳",
+    text: "Enregistrer dark mode dans localStorage 🥳",
     isCompleted: false,
     id: "206e8742-02b1-4ce9-92d2-d6184588f4c3"
   }
@@ -53,7 +53,10 @@ const Todos = () => {
     setTodos(
       todos.map((el) => {
         if (el.id === task.id) {
-          el.isCompleted = !el.isCompleted
+          return {
+            ...el,
+            isCompleted: !el.isCompleted
+          }
         }
         return el
       })
