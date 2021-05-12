@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import TodosList from "./TodosList"
 import SelectTodos from "./SelectTodos"
 import AddTodoForm from "./AddTodoForm"
@@ -23,8 +23,14 @@ const initialTodos = [
 ]
 
 const Todos = () => {
-  const [todos, setTodos] = useState(initialTodos)
+  const [todos, setTodos] = useState(() => {
+    return JSON.parse(window.localStorage.getItem("my-todos")) || initialTodos
+  })
   const [filter, setFilter] = useState("all")
+
+  useEffect(() => {
+    window.localStorage.setItem("my-todos", JSON.stringify(todos))
+  }, [todos])
 
   const addTodo = (text) => {
     const newTodo = {
