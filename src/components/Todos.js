@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import TodosList from "./TodosList"
-import SelectTodos from "./SelectTodos"
 import AddTodoForm from "./AddTodoForm"
 import { v4 as uuidv4 } from "uuid"
 
@@ -33,18 +32,10 @@ const Todos = () => {
       JSON.parse(window.localStorage.getItem("my-new-todos")) || initialTodos
     )
   })
-  const [filter, setFilter] = useState("all")
-  const completedCount = todos.filter((el) => el.isCompleted).length
-  const todoCount = todos.length - completedCount
+
   useEffect(() => {
     window.localStorage.setItem("my-new-todos", JSON.stringify(todos))
   }, [todos])
-
-  useEffect(() => {
-    document.title = todoCount
-      ? `${todoCount} choses à faire !`
-      : "Qu'avez vous à faire aujourd'hui"
-  }, [todoCount])
 
   const addTodo = (text) => {
     const newTodo = {
@@ -73,28 +64,15 @@ const Todos = () => {
     )
   }
 
-  const filteredTodos = todos.filter((el) => {
-    if (filter === "completed") {
-      return el.isCompleted
-    }
-    if (filter === "notcompleted") {
-      return !el.isCompleted
-    }
-    return true
-  })
-
   return (
     <main>
-      <h2 className="text-center">
-        Ma liste de tâches ({completedCount} / {todos.length})
-      </h2>
-      <SelectTodos filter={filter} setFilter={setFilter} />
+      <h2 className="text-center">Ma liste de tâches ({todos.length})</h2>
       <TodosList
-        todos={filteredTodos}
+        todos={todos}
         deleteTodo={deleteTodo}
         toggleCompleteTodo={toggleCompleteTodo}
       />
-      <AddTodoForm addTodo={addTodo} setFilter={setFilter} />
+      <AddTodoForm addTodo={addTodo} />
     </main>
   )
 }

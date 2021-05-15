@@ -1,11 +1,10 @@
 const AddTodoForm = (props) => {
-  const { addTodo, setFilter } = props
+  const { addTodo } = props
   const handleFormSubmit = (event) => {
     event.preventDefault()
     const newTodoText = event.target.elements.todo.value
     addTodo(newTodoText)
     event.target.reset()
-    setFilter((filter) => (filter === "completed" ? "all" : filter))
   }
   return (
     <form onSubmit={handleFormSubmit}>
