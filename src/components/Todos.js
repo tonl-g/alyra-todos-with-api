@@ -8,39 +8,36 @@ const initialTodos = [
   {
     text: "Forkez et cloner ce repo",
     isCompleted: true,
-    id: "1b688c51-e990-4ce3-95a5-9018cf81d23d",
+    id: "1b688c51-e990-4ce3-95a5-9018cf81d23d"
   },
   {
-    text: "Jouer avec le <title></title> 🤩",
+    text: "Refactor todos avec useReducer",
     isCompleted: false,
-    id: "efc6331d-7ca2-49a6-b014-378b8280b33d",
+    id: "efc6331d-7ca2-49a6-b014-378b8280b33d"
   },
   {
-    text: "Enregistrer les tâches dans localStorage 🤓",
+    text: "Add dispatch to Context",
     isCompleted: false,
-    id: "9e60d353-cd72-40bb-97e6-5841e51635c0",
+    id: "9e60d353-cd72-40bb-97e6-5841e51635c0"
   },
   {
-    text: "Mettre en place dark mode 😎",
+    text: "Add Color Mode Context",
     isCompleted: false,
-    id: "df0ce18c-b4fa-4651-82c0-72fad6b486e4",
-  },
-  {
-    text: "Enregistrer dark mode dans localStorage 🥳",
-    isCompleted: false,
-    id: "206e8742-02b1-4ce9-92d2-d6184588f4c3",
-  },
+    id: "df0ce18c-b4fa-4651-82c0-72fad6b486e4"
+  }
 ]
 
 const Todos = () => {
   const [todos, setTodos] = useState(() => {
-    return JSON.parse(window.localStorage.getItem("my-todos")) || initialTodos
+    return (
+      JSON.parse(window.localStorage.getItem("my-new-todos")) || initialTodos
+    )
   })
   const [filter, setFilter] = useState("all")
   const completedCount = todos.filter((el) => el.isCompleted).length
   const todoCount = todos.length - completedCount
   useEffect(() => {
-    window.localStorage.setItem("my-todos", JSON.stringify(todos))
+    window.localStorage.setItem("my-new-todos", JSON.stringify(todos))
   }, [todos])
 
   useEffect(() => {
@@ -53,7 +50,7 @@ const Todos = () => {
     const newTodo = {
       text,
       isCompleted: false,
-      id: uuidv4(),
+      id: uuidv4()
     }
     setTodos([...todos, newTodo])
   }
@@ -68,7 +65,7 @@ const Todos = () => {
         if (el.id === task.id) {
           return {
             ...el,
-            isCompleted: !el.isCompleted,
+            isCompleted: !el.isCompleted
           }
         }
         return el
