@@ -1,5 +1,20 @@
-const AddTodoForm = (props) => {
-  const { addTodo } = props
+import { v4 as uuidv4 } from "uuid"
+import { useDarkMode } from "../context/DarkModeContext"
+import { useTodosDispatch } from "../context/TodosDispatchContext"
+
+const AddTodoForm = () => {
+  const darkMode = useDarkMode()
+  const dispatch = useTodosDispatch()
+  const addTodo = (text) => {
+    const newTodo = {
+      text,
+      isCompleted: false,
+      id: uuidv4(),
+    }
+    //setTodos([...todos, newTodo])
+    dispatch({ type: "ADD", payload: newTodo })
+  }
+  const darkModeClass = darkMode ? "text-white bg-dark" : ""
   const handleFormSubmit = (event) => {
     event.preventDefault()
     const newTodoText = event.target.elements.todo.value
@@ -9,10 +24,10 @@ const AddTodoForm = (props) => {
   return (
     <form onSubmit={handleFormSubmit}>
       <div className="input-group mb-2">
-        <label className="input-group-text" htmlFor="todo">
+        <label className={`input-group-text ${darkModeClass}`} htmlFor="todo">
           Ajouter une tâche
         </label>
-        <input className="form-control" id="todo" required />
+        <input className={`form-control ${darkModeClass}`} id="todo" required />
       </div>
       <button type="submit" className="btn btn-primary">
         allons-y !

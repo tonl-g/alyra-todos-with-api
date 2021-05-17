@@ -1,7 +1,16 @@
+import { useTodosDispatch } from "../context/TodosDispatchContext"
 const Todo = (props) => {
-  const { todo, deleteTodo, toggleCompleteTodo } = props
+  const { todo } = props
+  const dispatch = useTodosDispatch()
   const style = {
-    textDecoration: todo.isCompleted ? "line-through" : "none"
+    textDecoration: todo.isCompleted ? "line-through" : "none",
+  }
+  const deleteTodo = (task) => {
+    dispatch({ type: "DELETE", payload: task })
+  }
+
+  const toggleCompleteTodo = (task) => {
+    dispatch({ type: "TOGGLE", payload: task })
   }
   return (
     <div className="shadow-sm border p-2 d-flex align-items-center justify-content-between mb-2">

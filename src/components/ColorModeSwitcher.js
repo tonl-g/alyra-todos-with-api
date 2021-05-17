@@ -1,9 +1,10 @@
-import React from "react"
+import { useDarkMode } from "../context/DarkModeContext"
 
-const ColorModeSwitcher = ({ darkMode, setDarkMode }) => {
+const ColorModeSwitcher = ({ setDarkMode }) => {
   const handleModeChange = () => {
     setDarkMode((mode) => !mode)
   }
+  const darkMode = useDarkMode()
   return (
     <div className="form-check form-switch">
       <input

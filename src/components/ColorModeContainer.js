@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { DarkModeContext } from "../context/DarkModeContext"
 import ColorModeSwitcher from "./ColorModeSwitcher"
 
 const ColorModeContainer = ({ children }) => {
@@ -14,8 +15,10 @@ const ColorModeContainer = ({ children }) => {
 
   return (
     <div className={`${modeClass} min-vh-100`}>
-      <ColorModeSwitcher darkMode={darkMode} setDarkMode={setDarkMode} />
-      {children}
+      <DarkModeContext.Provider value={darkMode}>
+        <ColorModeSwitcher setDarkMode={setDarkMode} />
+        {children}
+      </DarkModeContext.Provider>
     </div>
   )
 }
