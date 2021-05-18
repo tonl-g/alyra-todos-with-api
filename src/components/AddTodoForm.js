@@ -5,6 +5,8 @@ import { useTodosDispatch } from "../context/TodosDispatchContext"
 const AddTodoForm = () => {
   const darkMode = useDarkMode()
   const dispatch = useTodosDispatch()
+  const darkModeClass = darkMode ? "text-white bg-dark" : ""
+
   const addTodo = (text) => {
     const newTodo = {
       text,
@@ -13,7 +15,6 @@ const AddTodoForm = () => {
     }
     dispatch({ type: "ADD", payload: newTodo })
   }
-  const darkModeClass = darkMode ? "text-white bg-dark" : ""
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
