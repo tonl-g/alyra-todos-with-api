@@ -11,10 +11,10 @@ const AddTodoForm = () => {
       isCompleted: false,
       id: uuidv4(),
     }
-    //setTodos([...todos, newTodo])
     dispatch({ type: "ADD", payload: newTodo })
   }
   const darkModeClass = darkMode ? "text-white bg-dark" : ""
+
   const handleFormSubmit = (event) => {
     event.preventDefault()
     const newTodoText = event.target.elements.todo.value
